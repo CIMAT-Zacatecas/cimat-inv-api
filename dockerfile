@@ -11,4 +11,5 @@ USER node
 WORKDIR /app
 COPY --chown=node:node --from=dev-deps /app/node_modules ./node_modules
 COPY --chown=node:node . .
-CMD npm run migration:run && npm run start:dev
+
+CMD npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm run start:dev
