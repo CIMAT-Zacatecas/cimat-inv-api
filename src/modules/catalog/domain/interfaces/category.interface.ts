@@ -5,4 +5,5 @@ export interface ICategory extends BaseEntity {
   description?: string;
   created_at?: Date;
   updated_at?: Date;
+  // TODO: Agregar created_by y updated_by en camelcase
 }

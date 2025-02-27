@@ -41,6 +41,8 @@ export class CategoryEntity extends Model<ICategory> {
   })
   created_by: number;
 
+
+  // TODO: pasar a camelceslinttase
   @CreatedAt // Use this decorator
   created_at: Date;
 

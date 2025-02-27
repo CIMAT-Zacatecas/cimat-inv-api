@@ -14,7 +14,12 @@ export class CategoryModel implements ICategory {
   updated_by?: number;
 
   updated_at?: Date;
+  
+  createdAt: Date;
 
+  updatedAt: Date;
+
+  // TODO: pasar todos los campos a camelcase y agregarlos al constructor
   constructor(name: string, description?: string) {
     this.name = name;
     this.description = description;
@@ -22,9 +27,7 @@ export class CategoryModel implements ICategory {
     this.updated_at = new Date();
   }
 
-  createdAt: Date;
-
-  updatedAt: Date;
+  // TODO: Agregar metodo para actualizar todos los datos
 
   setUpdatedAt() {
     this.updated_at = new Date();

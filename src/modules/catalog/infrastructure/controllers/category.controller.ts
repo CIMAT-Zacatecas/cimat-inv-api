@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Request,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -85,10 +86,12 @@ export class CategoryController {
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
+    @Request() req,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCategoryDto: UpdateCategoryCommand,
   ): Promise<ICategory> {
-    return await this.categoryService.update(id, updateCategoryDto);
+    const userId = req.user.id;
+    return await this.categoryService.update(id, updateCategoryDto, userId);
   }
 
   @ApiTags('Catalogs')
@@ -100,7 +103,8 @@ export class CategoryController {
   })
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  async remove(
+    @Param('id', ParseIntPipe) id: number): Promise<void> {
     return await this.categoryService.remove(id);
   }
 }

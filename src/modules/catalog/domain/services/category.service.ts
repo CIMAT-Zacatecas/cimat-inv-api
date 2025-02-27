@@ -10,7 +10,7 @@ export class CategoryService {
   constructor(
     @Inject(ICategoryDatabaseRepository)
     private readonly categoryDatabaseRepository: ICategoryDatabaseRepository,
-  ) {}
+  ) { }
 
   async create(data: Partial<ICategory>): Promise<ICategory> {
     const categoryModel = new CategoryModel(data.name, data.description);
@@ -31,14 +31,16 @@ export class CategoryService {
     return category;
   }
 
-  async update(id: number, data: Partial<ICategory>): Promise<ICategory> {
-    await this.findOne(id);
-    const categoryModel = new CategoryModel(data.name, data.description);
+  async update(id: number, data: Partial<ICategory>, userId): Promise<ICategory> {
+    const category = await this.findOne(id);
+    const categoryModel = new CategoryModel(data.name, data.description, userId);
     return await this.categoryDatabaseRepository.update(id, categoryModel);
   }
-
+  
   async remove(id: number): Promise<void> {
     await this.findOne(id);
     await this.categoryDatabaseRepository.delete(id);
   }
+
+  // TODO: crear parseEntityToModel como en el Todos service
 }
