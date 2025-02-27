@@ -5,8 +5,10 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
+  ForeignKey
 } from 'sequelize-typescript';
 import { ICategory } from '../../domain/interfaces/category.interface';
+import { UserEntity } from 'src/modules/users/infrastructure/entities/user.entity';
 
 @Table({
   tableName: 'categories',
@@ -32,9 +34,10 @@ export class CategoryEntity extends Model<ICategory> {
   })
   description: string;
 
+  @ForeignKey(() => UserEntity)
   @Column({
     type: DataType.INTEGER,
-    allowNull: true,
+    allowNull: false,
   })
   created_by: number;
 
