@@ -40,12 +40,14 @@ export class CategoryController {
     status: HttpStatus.CREATED,
     description: 'The category has been successfully created.',
   })
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(
+    @Request() req,
     @Body() createCategoryDto: CreateCategoryCommand,
   ): Promise<ICategory> {
-    return await this.categoryService.create(createCategoryDto);
+    const userId = req.user.id;
+    return await this.categoryService.create(createCategoryDto, userId);
   }
 
   @ApiTags('Catalogs')
@@ -103,8 +105,7 @@ export class CategoryController {
   })
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async remove(
-    @Param('id', ParseIntPipe) id: number): Promise<void> {
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return await this.categoryService.remove(id);
   }
 }

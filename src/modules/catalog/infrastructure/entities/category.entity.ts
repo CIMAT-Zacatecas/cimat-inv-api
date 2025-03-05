@@ -5,7 +5,7 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
-  ForeignKey
+  ForeignKey,
 } from 'sequelize-typescript';
 import { ICategory } from '../../domain/interfaces/category.interface';
 import { UserEntity } from 'src/modules/users/infrastructure/entities/user.entity';
@@ -39,12 +39,11 @@ export class CategoryEntity extends Model<ICategory> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  created_by: number;
-
+  createdBy: number;
 
   // TODO: pasar a camelceslinttase
-  @CreatedAt // Use this decorator
-  created_at: Date;
+  @CreatedAt
+  createdAt: Date;
 
   @Column({
     type: DataType.INTEGER,
@@ -52,6 +51,6 @@ export class CategoryEntity extends Model<ICategory> {
   })
   updated_by: number;
 
-  @UpdatedAt // Use this decorator
-  updated_at: Date;
+  @UpdatedAt
+  updatedAt: Date;
 }

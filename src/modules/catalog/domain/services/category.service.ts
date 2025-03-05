@@ -10,10 +10,14 @@ export class CategoryService {
   constructor(
     @Inject(ICategoryDatabaseRepository)
     private readonly categoryDatabaseRepository: ICategoryDatabaseRepository,
-  ) { }
+  ) {}
 
-  async create(data: Partial<ICategory>): Promise<ICategory> {
-    const categoryModel = new CategoryModel(data.name, data.description);
+  async create(data: Partial<ICategory>, userId: number): Promise<ICategory> {
+    const categoryModel = new CategoryModel(
+      data.name,
+      data.description,
+      userId,
+    );
     return await this.categoryDatabaseRepository.create(categoryModel);
   }
 
@@ -31,16 +35,26 @@ export class CategoryService {
     return category;
   }
 
-  async update(id: number, data: Partial<ICategory>, userId): Promise<ICategory> {
+  async update(
+    id: number,
+    data: Partial<ICategory>,
+    userId: number,
+  ): Promise<ICategory> {
     const category = await this.findOne(id);
-    const categoryModel = new CategoryModel(data.name, data.description, userId);
-    return await this.categoryDatabaseRepository.update(id, categoryModel);
+    // find the user in the database
+    const categoryM = this.parseEntityToModel(category);
+    categoryM.updatedBy = userId;
+    categoryM.update(data);
+    return await this.categoryDatabaseRepository.update(id, categoryM);
   }
-  
+
   async remove(id: number): Promise<void> {
     await this.findOne(id);
     await this.categoryDatabaseRepository.delete(id);
   }
 
   // TODO: crear parseEntityToModel como en el Todos service
+  private parseEntityToModel(data: ICategory): CategoryModel {
+    return new CategoryModel(data.name, data.description, data.updatedBy);
+  }
 }

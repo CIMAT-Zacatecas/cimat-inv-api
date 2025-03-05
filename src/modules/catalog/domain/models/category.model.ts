@@ -7,29 +7,38 @@ export class CategoryModel implements ICategory {
 
   description?: string;
 
-  created_by?: number;
+  createdBy?: number;
 
-  created_at?: Date;
-
-  updated_by?: number;
-
-  updated_at?: Date;
-  
   createdAt: Date;
+
+  updatedBy?: number;
 
   updatedAt: Date;
 
-  // TODO: pasar todos los campos a camelcase y agregarlos al constructor
-  constructor(name: string, description?: string) {
+  constructor(
+    name: string,
+    description?: string,
+    createdBy?: number,
+    updatedBy?: number,
+  ) {
     this.name = name;
     this.description = description;
-    this.created_at = new Date();
-    this.updated_at = new Date();
+    this.createdBy = createdBy;
+    this.updatedBy = updatedBy;
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
   }
 
   // TODO: Agregar metodo para actualizar todos los datos
 
+  update(data: Partial<ICategory>): void {
+    this.name = data.name;
+    this.description = data.description;
+    this.updatedBy = data.updatedBy;
+    this.setUpdatedAt();
+  }
+
   setUpdatedAt() {
-    this.updated_at = new Date();
+    this.updatedAt = new Date();
   }
 }
