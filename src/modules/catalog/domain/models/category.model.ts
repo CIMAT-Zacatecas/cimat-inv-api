@@ -5,13 +5,13 @@ export class CategoryModel implements ICategory {
 
   name: string;
 
-  description?: string;
+  description: string;
 
-  createdBy?: number;
+  createdBy: number;
 
   createdAt: Date;
 
-  updatedBy?: number;
+  updatedBy: number;
 
   updatedAt: Date;
 
@@ -20,13 +20,17 @@ export class CategoryModel implements ICategory {
     description?: string,
     createdBy?: number,
     updatedBy?: number,
+    createdAt?: Date,
+    updatedAt?: Date,
+    // TODO La agregamos? deletedAt?: Date,
   ) {
     this.name = name;
     this.description = description;
     this.createdBy = createdBy;
     this.updatedBy = updatedBy;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
+    this.createdAt = createdAt ? new Date(createdAt) : new Date();
+    this.updatedAt = updatedAt ? new Date(updatedAt) : new Date();
+    // TODO La agregamos? this.deletedAt = deletedAt ? new Date(deletedAt) : undefined;
   }
 
   // TODO: Agregar metodo para actualizar todos los datos
@@ -34,7 +38,6 @@ export class CategoryModel implements ICategory {
   update(data: Partial<ICategory>): void {
     this.name = data.name;
     this.description = data.description;
-    this.updatedBy = data.updatedBy;
     this.setUpdatedAt();
   }
 

@@ -10,10 +10,7 @@ import {
 import { ICategory } from '../../domain/interfaces/category.interface';
 import { UserEntity } from 'src/modules/users/infrastructure/entities/user.entity';
 
-@Table({
-  tableName: 'categories',
-  underscored: true, // This tells Sequelize to use snake_case in DB
-})
+@Table({ tableName: 'categories' })
 export class CategoryEntity extends Model<ICategory> {
   @Column({
     type: DataType.INTEGER,
@@ -49,7 +46,7 @@ export class CategoryEntity extends Model<ICategory> {
     type: DataType.INTEGER,
     allowNull: true,
   })
-  updated_by: number;
+  updatedBy: number;
 
   @UpdatedAt
   updatedAt: Date;

@@ -3,7 +3,7 @@ import { ICategoryDatabaseRepository } from '../repositories/category.interface'
 import { CategoryModel } from '../models/category.model';
 import { ICategory } from '../interfaces/category.interface';
 import { IPagination } from 'src/lib/interfaces/pagination.interface';
-import { TodoSearchCommand } from 'src/modules/todos/infrastructure/commands/todo-search.command';
+import { CategorySearchCommand } from '../../infrastructure/commands/search-category.command';
 
 @Injectable()
 export class CategoryService {
@@ -13,26 +13,23 @@ export class CategoryService {
   ) {}
 
   async create(data: Partial<ICategory>, userId: number): Promise<ICategory> {
-    const categoryModel = new CategoryModel(
-      data.name,
-      data.description,
-      userId,
-    );
-    return await this.categoryDatabaseRepository.create(categoryModel);
+    const categoryM = new CategoryModel(data.name, data.description, userId);
+    return await this.categoryDatabaseRepository.create(categoryM);
   }
 
   async findAll(
-    query: TodoSearchCommand,
+    query: CategorySearchCommand,
   ): Promise<ICategory[] | IPagination<ICategory>> {
     return await this.categoryDatabaseRepository.findAll(query);
   }
 
   async findOne(id: number): Promise<ICategory> {
-    const category = await this.categoryDatabaseRepository.findOne(id);
-    if (!category) {
-      throw new NotFoundException('Category not found');
+    const data = await this.categoryDatabaseRepository.findOne(id);
+
+    if (!data) {
+      throw new NotFoundException(`Category with id ${id} not found`);
     }
-    return category;
+    return data;
   }
 
   async update(
@@ -41,10 +38,9 @@ export class CategoryService {
     userId: number,
   ): Promise<ICategory> {
     const category = await this.findOne(id);
-    // find the user in the database
     const categoryM = this.parseEntityToModel(category);
-    categoryM.updatedBy = userId;
     categoryM.update(data);
+    categoryM.updatedBy = userId;
     return await this.categoryDatabaseRepository.update(id, categoryM);
   }
 
@@ -55,6 +51,13 @@ export class CategoryService {
 
   // TODO: crear parseEntityToModel como en el Todos service
   private parseEntityToModel(data: ICategory): CategoryModel {
-    return new CategoryModel(data.name, data.description, data.updatedBy);
+    return new CategoryModel(
+      data.name,
+      data.description,
+      data.createdBy,
+      data.updatedBy,
+      data.createdAt,
+      data.updatedAt,
+    );
   }
 }
