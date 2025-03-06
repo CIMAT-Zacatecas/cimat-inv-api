@@ -5,15 +5,12 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
-  ForeignKey
+  ForeignKey,
 } from 'sequelize-typescript';
 import { ICategory } from '../../domain/interfaces/category.interface';
 import { UserEntity } from 'src/modules/users/infrastructure/entities/user.entity';
 
-@Table({
-  tableName: 'categories',
-  underscored: true, // This tells Sequelize to use snake_case in DB
-})
+@Table({ tableName: 'categories' })
 export class CategoryEntity extends Model<ICategory> {
   @Column({
     type: DataType.INTEGER,
@@ -39,17 +36,18 @@ export class CategoryEntity extends Model<ICategory> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  created_by: number;
+  createdBy: number;
 
-  @CreatedAt // Use this decorator
-  created_at: Date;
+  // TODO: pasar a camelceslinttase
+  @CreatedAt
+  createdAt: Date;
 
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
   })
-  updated_by: number;
+  updatedBy: number;
 
-  @UpdatedAt // Use this decorator
-  updated_at: Date;
+  @UpdatedAt
+  updatedAt: Date;
 }

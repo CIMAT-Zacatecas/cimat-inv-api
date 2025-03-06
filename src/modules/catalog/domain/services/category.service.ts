@@ -3,7 +3,7 @@ import { ICategoryDatabaseRepository } from '../repositories/category.interface'
 import { CategoryModel } from '../models/category.model';
 import { ICategory } from '../interfaces/category.interface';
 import { IPagination } from 'src/lib/interfaces/pagination.interface';
-import { TodoSearchCommand } from 'src/modules/todos/infrastructure/commands/todo-search.command';
+import { CategorySearchCommand } from '../../infrastructure/commands/search-category.command';
 
 @Injectable()
 export class CategoryService {
@@ -12,33 +12,52 @@ export class CategoryService {
     private readonly categoryDatabaseRepository: ICategoryDatabaseRepository,
   ) {}
 
-  async create(data: Partial<ICategory>): Promise<ICategory> {
-    const categoryModel = new CategoryModel(data.name, data.description);
-    return await this.categoryDatabaseRepository.create(categoryModel);
+  async create(data: Partial<ICategory>, userId: number): Promise<ICategory> {
+    const categoryM = new CategoryModel(data.name, data.description, userId);
+    return await this.categoryDatabaseRepository.create(categoryM);
   }
 
   async findAll(
-    query: TodoSearchCommand,
+    query: CategorySearchCommand,
   ): Promise<ICategory[] | IPagination<ICategory>> {
     return await this.categoryDatabaseRepository.findAll(query);
   }
 
   async findOne(id: number): Promise<ICategory> {
-    const category = await this.categoryDatabaseRepository.findOne(id);
-    if (!category) {
-      throw new NotFoundException('Category not found');
+    const data = await this.categoryDatabaseRepository.findOne(id);
+
+    if (!data) {
+      throw new NotFoundException(`Category with id ${id} not found`);
     }
-    return category;
+    return data;
   }
 
-  async update(id: number, data: Partial<ICategory>): Promise<ICategory> {
-    await this.findOne(id);
-    const categoryModel = new CategoryModel(data.name, data.description);
-    return await this.categoryDatabaseRepository.update(id, categoryModel);
+  async update(
+    id: number,
+    data: Partial<ICategory>,
+    userId: number,
+  ): Promise<ICategory> {
+    const category = await this.findOne(id);
+    const categoryM = this.parseEntityToModel(category);
+    categoryM.update(data);
+    categoryM.updatedBy = userId;
+    return await this.categoryDatabaseRepository.update(id, categoryM);
   }
 
   async remove(id: number): Promise<void> {
     await this.findOne(id);
     await this.categoryDatabaseRepository.delete(id);
+  }
+
+  // TODO: crear parseEntityToModel como en el Todos service
+  private parseEntityToModel(data: ICategory): CategoryModel {
+    return new CategoryModel(
+      data.name,
+      data.description,
+      data.createdBy,
+      data.updatedBy,
+      data.createdAt,
+      data.updatedAt,
+    );
   }
 }

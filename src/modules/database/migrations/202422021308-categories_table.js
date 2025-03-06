@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      created_by: {
+      createdBy: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -27,11 +27,7 @@ module.exports = {
           key: 'id',
         },
       },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
-      updated_by: {
+      updatedBy: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
@@ -41,10 +37,8 @@ module.exports = {
           key: 'id',
         },
       },
-      updated_at: {
-        type: Sequelize.DATE,
-        allowNull: true,
-      },
+      createdAt: Sequelize.DATE,
+      updatedAt: Sequelize.DATE,
     });
   },
 
