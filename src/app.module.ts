@@ -49,6 +49,7 @@ import appleConfig from 'config/registers/apple.config';
     LoggerModule,
     CatalogModule,
   ],
+  controllers: [],
 })
 export class AppModule {
   static appName: string;
