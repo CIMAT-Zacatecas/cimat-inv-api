@@ -7,17 +7,23 @@ import {
   UpdatedAt,
   ForeignKey,
 } from 'sequelize-typescript';
-import { ICategory } from '../../domain/interfaces/category.interface';
+import { ILocation } from '../../domain/interfaces/location.interface';
 import { UserEntity } from 'src/modules/users/infrastructure/entities/user.entity';
 
-@Table({ tableName: 'categories' })
-export class CategoryEntity extends Model<ICategory> {
+@Table({ tableName: 'locations' })
+export class LocationEntity extends Model<ILocation> {
   @Column({
     type: DataType.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   })
   id: number;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  code: string;
 
   @Column({
     type: DataType.STRING,
@@ -41,7 +47,6 @@ export class CategoryEntity extends Model<ICategory> {
   @CreatedAt
   createdAt: Date;
 
-  // TODO deberia hacer referencia a la tabla de usuarios???
   @Column({
     type: DataType.INTEGER,
     allowNull: true,
