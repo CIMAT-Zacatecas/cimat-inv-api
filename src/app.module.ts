@@ -17,8 +17,10 @@ import { BasicModule } from './lib/examples/basic.module';
 import { MainModule } from './lib/main/main.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { LocationsModule } from './modules/locations/locations.module';
 import { LoggerModule } from './lib/vendor/logger/logger.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
+import { SubLocationsModule } from './modules/sub-locations/sub-locations.module';
 import jwtConfig from 'config/registers/jwt.config';
 import appleConfig from 'config/registers/apple.config';
 
@@ -48,7 +50,10 @@ import appleConfig from 'config/registers/apple.config';
     AuthModule,
     LoggerModule,
     CatalogModule,
+    LocationsModule,
+    SubLocationsModule,
   ],
+  controllers: [],
 })
 export class AppModule {
   static appName: string;
