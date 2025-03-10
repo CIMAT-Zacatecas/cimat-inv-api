@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateCategoryCommand } from 'src/modules/catalog/infrastructure/commands/create-category.command';
+import { CreateLocationCommand } from './create-location.command';
 
-export class UpdateLocationCommand extends PartialType(CreateCategoryCommand) {}
+export class UpdateLocationCommand extends PartialType(CreateLocationCommand) {}
