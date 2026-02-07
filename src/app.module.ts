@@ -21,6 +21,7 @@ import { LocationsModule } from './modules/locations/locations.module';
 import { LoggerModule } from './lib/vendor/logger/logger.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
 import { SubLocationsModule } from './modules/sub-locations/sub-locations.module';
+import { AssetsModule } from './modules/assets/assets.module';
 import jwtConfig from 'config/registers/jwt.config';
 import appleConfig from 'config/registers/apple.config';
 
@@ -52,6 +53,7 @@ import appleConfig from 'config/registers/apple.config';
     CatalogModule,
     LocationsModule,
     SubLocationsModule,
+    AssetsModule,
   ],
   controllers: [],
 })
